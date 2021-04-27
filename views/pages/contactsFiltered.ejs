@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Filtered</h1>
+<input type="text" id="search1" placeholder="Search" data-contacts-array="<%= result %>">
+
+    <a href="/newContact">+Add Contact</a>
+   <section>
+<% result.forEach(elt => { %>
+ <h2> <%=elt.name  %>  </h2>
+<% }) %>
+   </section> 
+
+
+   <script>
+       const search = document.getElementById("search1")
+
+search1.addEventListener("keyup",async (e) => {
+  try {
+      const result = await fetch("/search")
+      const response = await result.json()
+      window.location.href = response.render
+  } catch (error) {
+      console.log(error)
+  }
+
+})
+
+//        for (let prop in search.dataset) {
+//   console.log("o." + prop + " = " + search.dataset[prop]);
+// }
+    //   console.log(typeof search.dataset)
+   </script>
+</body>
+</html>
