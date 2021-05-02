@@ -6,7 +6,7 @@ const path= require("path");
 const { v4: uuidv4 } = require('uuid');
 const crypto = require("crypto")
 const multer = require("multer")
-const bodyParser = require('body-parser')
+// const bodyParser = require('body-parser')
 const GridFsStorage = require("multer-gridfs-storage")
 const Grid = require("gridfs-stream")
 const methodOverride = require("method-override")
@@ -48,23 +48,16 @@ const connectDB = async () => {
 connectDB()
 
 
+let random =""
 
-
-
-
-// function array(){
-//     Contact.find()
-//     .then((result) => {
+app.use((req,res,next) => { 
+    random = uuidv4()
+    next()
     
-//     return result
-//     //    console.log(req.filterContact)
-//        next()
-//     //   res.json({render:""})
-//     }).catch((err) => {
-//       console.log(err)
-//     })
-// }
-// array()
+  
+})
+
+
 // GridSystem
 let gfs;
 
@@ -81,7 +74,7 @@ gfs = Grid(conn.db, mongoose.mongo);
 
 
 
-const random = uuidv4()
+
 const storage = new GridFsStorage({
     url: process.env.CONNECTIONSTRING,
     
@@ -91,7 +84,7 @@ const storage = new GridFsStorage({
           if (err) {
             return reject(err);
           }
-          console.log(random)
+          
           const filename = random + path.extname(file.originalname);
           const fileInfo = {
             filename: filename,
@@ -108,20 +101,36 @@ const storage = new GridFsStorage({
 
 
 
- // GET requests
+
+
+
+
+ // GET requests 
+
+ // "/" GET & Read Stream
  app.get("/",(req,res) => {
    gfs.files.find().toArray((err,files) => {
-     if(!files){
-         return res.json("no file")
+    if(!files|| files.length === 0){
+      return res.status(404).json({err:"no files"})
      }
+     //checking if contenttype is img
+     files.map((elt) => {
+       if(elt.contentType === "image/jpeg" || elt.contentType === "image/png" ){
+         elt.isImage = true
+         elt.imgId = elt.filename.split('.').slice(0, -1).join('.');
+       }else{
+         elt.isImage = false
+       }
+     })
      Contact.find()
      .then((result) => {
-    
+      console.log(result,files)
        res.render("pages/contacts",{result,files})
      }).catch((err) => {
        console.log(err)
      })
     
+     
    })
     
  })
@@ -130,7 +139,90 @@ const storage = new GridFsStorage({
     res.render("pages/newContact")
 
  })
+ app.get("/favourites",(req,res) => {
+  gfs.files.find().toArray((err,files) => {
+   if(!files|| files.length === 0){
+     return res.status(404).json({err:"no files"})
+    }
+    //checking if contenttype is img
+    files.map((elt) => {
+      if(elt.contentType === "image/jpeg" || elt.contentType === "image/png" ){
+        elt.isImage = true
+        elt.imgId = elt.filename.split('.').slice(0, -1).join('.');
+      }else{
+        elt.isImage = false
+      }
+    })
+    Contact.find()
+    .then((result) => {
+     console.log(result,files)
+      res.render("pages/favourites",{result,files})
+    }).catch((err) => {
+      console.log(err)
+    })
+   
+    
+  })
+   
+})
+
+
+ 
+
+// QR Code middleware
+const qrCode = (req,res,next) => {
+  
+}
+
+ app.get("/contacts/:id",(req,res) => {
+  gfs.files.find().toArray((err,files) => {
+   if(!files|| files.length === 0){
+     return res.status(404).json({err:"no files"})
+    }
+    //checking if contenttype is img
+    files.map((elt) => {
+      if(elt.contentType === "image/jpeg" || elt.contentType === "image/png" ){
+        elt.isImage = true
+        elt.imgId = elt.filename.split('.').slice(0, -1).join('.');
+      }else{
+        elt.isImage = false
+      }
+    })
+    Contact.find()
+    .then((result) => {
+     console.log(result,files)
+      res.render("pages/contactItem",{result,files})
+    }).catch((err) => {
+      console.log(err)
+    })
+   
+    
+  })
+   
+})
+
+// Images a-tag Route
+
+app.get("/images/:filename",(req,res) => {
+  gfs.files.findOne({filename:req.params.filename},(err,file) => {
+    if(!file|| file.length === 0){
+      return res.status(404).json({err:"no files"})
+    }
+    //check if image
+    if(file.contentType === "image/jpeg" || file.contentType === "image/png" ){
+    // Read output to Browser
+    const readstream = gfs.createReadStream(file.filename);
+readstream.pipe(res);
+    }else{
+      res.status(404).json({err:"not an image"})
+    }
+  })
+})
+
+
  // POST requests
+
+
 
  app.post("/upload",upload.single("img"),(req,res) => {
      const contact = new Contact({
@@ -140,6 +232,11 @@ const storage = new GridFsStorage({
          favourite:false,
          img_id:random
      })
+
+//============ test grid storage
+
+
+
      contact.save()
      .then((result) => {
        console.log(result)
@@ -152,23 +249,68 @@ const storage = new GridFsStorage({
 
  })
 
-// const filt = (req,res,next)=>{
-//     Contact.find()
-//     .then((result) => {
-//   const filterContact =   result.filter((elt) => {
-//        return elt.name == "Courage"
-//     })
-//     req.find = filterContact
-//       console.log(result[0].name,"here",req.find)
-//        next()
-//     //   res.json({render:""})
-//     }).catch((err) => {
-//       console.log(err)
-//     })
-// }
+const filt = (req,res,next)=>{
 
-app.get("/search",(req,res) => {
-//   console.log(req.filterContact)
-  res.json({result:req.find})
-res.end()
+  gfs.files.find().toArray((err,files) => {
+    if(!files|| files.length === 0){
+      return res.status(404).json({err:"no files"})
+     }
+     //checking if contenttype is img
+     files.map((elt) => {
+       if(elt.contentType === "image/jpeg" || elt.contentType === "image/png" ){
+         elt.isImage = true
+         elt.imgId = elt.filename.split('.').slice(0, -1).join('.');
+         req.images = files
+       }else{
+         elt.isImage = false
+       }
+     })
+    })
+  
+    Contact.find()
+    .then((result) => {
+  const filterContact =   result.filter((elt) => {
+       return elt.name.toLowerCase().includes(req.query.word.toLowerCase())
+    })
+    req.find = filterContact
+      console.log(filterContact)
+       next()
+    
+    }).catch((err) => {
+      console.log(err)
+    })
+}
+
+
+app.get("/search",filt,(req,res) => {
+  
+  res.send({contacts:req.find,images:req.images})
+// res.end()
+})
+
+// POST request favourites
+
+app.get("/contacts/favUpdate/:id",(req,res) => {
+  
+Contact.findById(req.params.id)
+  .then((result) => {
+    const favUpdate = result
+    favUpdate.favourite = !favUpdate.favourite
+    favUpdate.save()
+    .then((result) => {
+      console.log("fav updated")
+    }).catch((err) => {
+      console.log(err)
+    })
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+})
+
+
+//TEST
+app.get("/test",(req,res) => {
+  res.render("pages/contactsFiltered")
+
 })

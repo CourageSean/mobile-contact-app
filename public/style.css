@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Roboto:wght@100;300;400;500;700&display=swap');
+*{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
+
+
+body{
+    /* position: relative; */
+font-family: "Roboto";
+padding-top: 20px;
+
+}
+
+#contacts-container{
+width: 30%;
+border: 1px solid rgb(160, 155, 155);
+margin:auto;
+min-width: 400px;
+position: relative;
+
+
+ 
+ /* overflow: hidden;  */
+}
+.header-icons-wrapper{
+    background:#4d70fc;
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    padding-top: 10px;
+   padding-right: 5%;
+   padding-left: 5%;
+
+}
+
+/*====== Search Div ==========*/
+
+.search-container{
+    border-bottom: 1px solid black;
+    background:#4d70fc;
+    color: #fff;
+    font-family: "Krona One";
+    padding-top: 20px;
+}
+.search-container input{
+    display: block;
+    width: 90%;
+    margin:auto;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    border:none;
+}
+
+.search-container h1{
+display: inline-block;
+}
+.search-container div{
+display: flex;
+justify-content: space-evenly;
+}
+.search-container div a{
+display: inline-block;
+font-size: 3rem;
+font-weight: 100;
+color: #fff;
+text-decoration: none;
+}
+
+
+
+/*====== Contacts Div ==========*/
+#scrollspy{
+    position: absolute;
+    right: 3%;
+    list-style: none;
+    height: 200px;
+    padding-top: 15px;
+}
+#scrollspy li{
+    font-size: 0.85rem;
+}
+
+.ajax-wrapper h4{
+    display: inline-block;
+    margin: 0 ;
+}
+
+.ajax-wrapper{
+    width: 60%;
+    display: block;
+    margin:auto;
+}
+
+.star-wrapper{
+    width: 7.5%;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.star-wrapper img{
+    width: 100%;  
+}
+.star-wrapper a{
+    text-decoration: none;  
+}
+
+#contacts-div{
+height: 500px;
+width: 90%;
+display: block; 
+overflow-y: scroll;
+margin: auto;
+/* overflow: auto; */
+background: #fff;
+
+}
+
+.contact-item{
+   display: block; 
+   padding: 10px 0;
+   border-bottom: rgb(206, 204, 204) 1px solid;
+}
+
+
+
+    .contact-item span{
+        display: inline-block;
+        
+    }
+    .contact-item h4{
+        display: inline-block;
+        margin: 0;
+    }
+    .contact-item p{
+        margin: 0;
+        
+    }
+
+.name-telefon-wrapper{
+    display: inline-block;
+    transform: translateY(-30px);
+    text-decoration: none;
+    padding-left: 20px;
+}
+
+.name-telefon-wrapper h5{
+    color: #3f3e3e;
+    font-size: 0.9rem;
+}
+.name-telefon-wrapper p{
+    color: gray;
+    font-size: 0.8rem;
+    padding-top: 8px;
+}
+
+.avatar-wrapper{
+    width: 20%;
+    height: 50px;
+    display: inline-block;
+}
+.avatar-wrapper img{
+    width: 100%;
+    border-radius: 30%;
+}
+
+
+
+.fav{
+    font-size: 1.5rem;
+}
+
+.fav-color{
+    color:orange;
+}
+
+.star-color{
+
+    filter: invert(77%) sepia(74%) saturate(1878%) hue-rotate(0deg) brightness(104%) contrast(104%);
+}
+/*========== Botoom Div =================*/
+
+.bottom-menubar-container{
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid black;
+}
+
+/*========== Detail Item ==============*/
+
+#detail-container{
+    width: 40%;
+    border: 1px solid black;
+    margin:auto;
+  
+    
+     
+     /* overflow: hidden;  */
+    }
+
+#detail-div{
+    height: 400px;
+    width: 60%;
+    display: block; 
+    overflow-y: scroll;
+    margin-left: auto;
+    /* overflow: auto; */
+    
+    }
+
+   /* #test{
+       display: flex;
+   } */

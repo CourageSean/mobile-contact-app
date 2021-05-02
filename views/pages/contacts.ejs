@@ -6,30 +6,229 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
 </head>
 <body>
-<input type="text" id="search" placeholder="Search" data-contacts-array="<%= result %>">
+  <main>
+  <section id="contacts-container">
+    <div class="header-icons-wrapper">
+      <h4>16:45</h4>
+      <div>
+      <i class="fas fa-signal" style="color: #fff;" ></i>
+      <i class="fas fa-wifi" style="color: #fff;"></i>
+      <i class="fas fa-battery-three-quarters" style="color: #fff;" ></i>
+    </div>
+    </div>
+<div class="search-container">
+  <div>
+    <h1>Contacts</h1>
+    <a href="/newContact">+</a>
+    
+  </div>
+ 
+  <input type="text" id="search" placeholder="Search" data-contacts-array="<%= result %>">
+</div>
 
-    <a href="/newContact">+Add Contact</a>
-   <section>
-<% result.forEach(elt => { %>
- <h2> <%=elt.name  %>  </h2>
+
+   
+   
+     <div id="contacts-div">
+<ul id="scrollspy">
+  <li>A</li>
+  <li>B</li>
+  <li>C</li>
+  <li>D</li>
+  <li>E</li>
+  <li>F</li>
+  <li>G</li>
+  <li>H</li>
+  <li>I</li>
+  <li>J</li>
+  <li>K</li>
+  <li>L</li>
+  <li>M</li>
+  <li>N</li>
+  <li>O</li>
+  <li>P</li>
+  <li>Q</li>
+  <li>R</li>
+  <li>S</li>
+  <li>T</li>
+  <li>U</li>
+  <li>V</li>
+  <li>W</li>
+  <li>X</li>
+  <li>Y</li>
+  <li>Z</li>
+</ul>
+      
+       <% result.forEach(elt => { %>
+        <div class="contact-item">
+        <% if (elt.favourite) { %>
+          <div class="star-wrapper">
+            <img class="star star-color" data-id=<%= elt._id %> data-fav= <%=elt.favourite %>  src="images/star.svg" alt="">
+          </div>
+        <% } else{%>
+          <div class="star-wrapper">
+            <img class="star" data-id=<%= elt._id %> data-fav= <%=elt.favourite %>  src="images/star.svg" alt="">
+          </div>
+            <% } %> 
+
+<% files.forEach(element => { %>
+  
+  <% if (element.imgId === elt.img_id) { %>
+    <a href="/contacts/<%=elt._id%>" style="text-decoration: none;">
+    <div class="avatar-wrapper">
+      <img src="/images/<%=element.filename%>"  alt="">
+    </div>
+  </a>
+
+    <% }else{ %>
+      <% null %> 
+    <!-- <div class="avatar-wrapper">
+      <img src="https://images.squarespace-cdn.com/content/v1/57b711122e69cf5fea1cf5a6/1563373750117-4CCS2VSPC2XW4V1NI6HG/ke17ZwdGBToddI8pDm48kLJXQjpc-yWDKGokof8ZYb5Zw-zPPgdn4jUwVcJE1ZvWQUxwkmyExglNqGp0IvTJZUJFbgE-7XRK3dMEBRBhUpyvMLJO5Nc1jHayiyhnEEdtiL0fAxQ5VfgiNwce99YG5amUuI-5NVRyc6OSuLOpZwE/Screen+Shot+2019-07-17+at+10.29.00+AM.png?format=1000w"  alt="">
+    </div> -->
+ 
+  <% } %> 
+
+
 <% }) %>
+
+        
+      
+<a class="name-telefon-wrapper" href="/contacts/<%=elt._id%>">
+    <h5> <%=elt.name  %>  </h5>
+    <p><%= elt.telefon %>  </p>
+    </a>
+  </div>
+     <% }) %>
+    
+    </div>
+    <div>
+      <div class="ajax-wrapper" id="ajax"></div>
+    </div>
+     
+
+     <div class="bottom-menubar-container">
+       <h3>Recent</h3>
+       <h3><a href="/favourites">Contacts</a></h3> 
+       <h3><a href="/favourites">Favourites</a></h3> 
+     </div>
    </section> 
+   
+<section>
 
-
+</section>
+</main>
    <script>
        const search = document.getElementById("search")
+       const ajaxContainer = document.getElementById("ajax")
+       const contactsDiv = document.getElementById("contacts-div")
+const favourites = document.querySelectorAll(".fav")
+const contactsSection = document.getElementById("contacts-container")
+//favaourite setup
+console.log(favourites)
+// favourites.forEach((elt) => {
+//   if(elt.dataset.fav==true){
+//     elt.style.color="yellow"
+//   }else if(elt.dataset.fav==false){
+//     elt.style.color="black"
+//   }
+// })
+contactsSection.addEventListener("click",async (e) => {
+  if(e.target.classList.contains("star")){
+    console.log("STAR")
+    e.target.classList.toggle("star-color")
+  }
+ 
+  try {
+    const result = await fetch(`/contacts/favUpdate/${e.target.dataset.id}`)
+      const response = await result.json()
+console.log(response)
+console.log(response.target.dataset)
+
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+
+//search setup
+if(search.value.length === 0){
+  contactsDiv.style.display ="block"
+}
 
 search.addEventListener("keyup",async (e) => {
-  try {
-      const result = await fetch("/search")
+
+
+    try {
+      const result = await fetch(`/search/?word=${search.value.trim()}`)
       const response = await result.json()
-      const last =  await fetch
       console.log(response)
+      ajaxContainer.innerHTML = `<p></p>`
+      if(search.value.trim().length > 0){
+        contactsDiv.style.display ="none"
+        response.contacts.forEach(element => {
+          
+          if(element.favourite){
+          
+
+ //Search Name output
+
+            ajaxContainer.innerHTML += `   <div class="star-wrapper">
+            <img class="star star-color" data-id=${element._id} data-fav= ${element.favourite}  src="images/star.svg" alt="">
+          </div>
+           <br>`
+//Search Image Output
+           response.images.forEach(img => {
+            if (img.imgId === element.img_id){
+              ajaxContainer.innerHTML +=`<div class="avatar-wrapper">
+      <img src="/images/${img.filename}"  alt="">
+    </div> <h4>${element.name} </h4> <p>${element.telefon}</p>`
+            }
+
+          });
+
+
+          }else{
+            ajaxContainer.innerHTML +=`   <div class="star-wrapper">
+            <img class="star" data-id=${element._id} data-fav= ${element.favourite}  src="images/star.svg" alt="">
+          </div>
+          <br>`
+
+           response.images.forEach(img => {
+            if (img.imgId === element.img_id){
+              ajaxContainer.innerHTML +=`<div class="avatar-wrapper">
+      <img src="/images/${img.filename}"  alt="">
+    </div>  <h4>${element.name} </h4>  <p>${element.telefon}</p>`
+            }
+
+          });
+
+          }
+
+
+
+         
+
+
+          
+        });
+      }else if(response.contacts.length === 0 && search.value.length !== 0){
+        ajaxContainer.innerHTML = `<p>No Match</p> ` 
+      }else if(search.value.trim().length === 0 &&response.contacts.length >0 ){
+        contactsDiv.style.display ="block"
+     
+      }
+     
+
   } catch (error) {
-      console.log(error)
+     console.log(error)
   }
+
+
+  
 
 })
 
