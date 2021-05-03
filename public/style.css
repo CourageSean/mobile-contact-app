@@ -24,6 +24,7 @@ body{
     /* position: relative; */
 font-family: "Roboto";
 padding-top: 20px;
+background: #beced5;
 
 }
 
@@ -40,7 +41,7 @@ background: #f7f9fa;
  /* overflow: hidden;  */
 }
 .header-icons-wrapper{
-    background:#4d70fc;
+    background: #fff;
     display: flex;
     justify-content: space-between;
     color: #000;
@@ -53,18 +54,18 @@ background: #f7f9fa;
 /*====== Search Div ==========*/
 
 .search-container{
-    border-bottom: 1px solid black;
+    border-bottom: 2px solid rgb(214, 211, 211);
     background:#fff;
     color: #fff;
     font-family: "Krona One";
-    padding-top: 20px;
+    
 }
 .search-container input{
-    display: block;
-    width: 90%;
-    margin:auto;
+    display: inline-block;
+    width: 80%;
+   
     padding: 10px 0;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     
 }
 
@@ -79,7 +80,7 @@ justify-content: space-evenly;
 display: inline-block;
 font-size: 3rem;
 font-weight: 100;
-color: #fff;
+color: #000;
 text-decoration: none;
 }
 
@@ -95,6 +96,8 @@ text-decoration: none;
 }
 #scrollspy li{
     font-size: 0.85rem;
+    line-height: 1.35;
+    color: gray;
 }
 
 .ajax-wrapper h4{
@@ -109,9 +112,11 @@ text-decoration: none;
 }
 
 .star-wrapper{
-    width: 7.5%;
-    margin-right: 10px;
+    width: 4.5%;
+    margin-right: 15px;
     display: inline-block;
+    transform: translateY(-20px);
+    cursor: pointer;
 }
 
 .star-wrapper img{
@@ -122,20 +127,22 @@ text-decoration: none;
 }
 
 #contacts-div{
-height: 500px;
+height: 530px;
 width: 90%;
 display: block; 
 overflow-y: scroll;
 margin: auto;
 /* overflow: auto; */
 background: #f7f9fa;
+padding-bottom: 30px;
+
 
 }
 
 .contact-item{
    display: block; 
    padding: 10px 0;
-   border-bottom: rgb(206, 204, 204) 1px solid;
+   border-bottom: rgb(243, 237, 237) 1px solid;
 }
 
 
@@ -157,12 +164,12 @@ background: #f7f9fa;
     display: inline-block;
     transform: translateY(-30px);
     text-decoration: none;
-    padding-left: 20px;
+    padding-left: 40px;
 }
 
 .name-telefon-wrapper h5{
     color: #3f3e3e;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
 }
 .name-telefon-wrapper p{
     color: gray;
@@ -171,13 +178,13 @@ background: #f7f9fa;
 }
 
 .avatar-wrapper{
-    width: 20%;
+    width: 15%;
     height: 50px;
     display: inline-block;
 }
 .avatar-wrapper img{
     width: 100%;
-    border-radius: 30%;
+    border-radius: 45%;
 }
 
 
@@ -186,13 +193,11 @@ background: #f7f9fa;
     font-size: 1.5rem;
 }
 
-.fav-color{
-    color:orange;
-}
+
 
 .star-color{
 
-    filter: invert(77%) sepia(74%) saturate(1878%) hue-rotate(0deg) brightness(104%) contrast(104%);
+    filter: invert(83%) sepia(17%) saturate(4556%) hue-rotate(164deg) brightness(100%) contrast(104%);
 }
 /*========== Botoom Div =================*/
 
@@ -200,6 +205,17 @@ background: #f7f9fa;
     display: flex;
     justify-content: space-around;
     border-top: 1px solid black;
+    padding-top: 13px;
+}
+.bottom-menubar-container a{
+   text-decoration: none;
+}
+.bottom-menubar-container p{
+   color: gray;
+   font-size: 0.85rem;
+   font-weight: 500;
+   transform: translateX(-10px);
+   padding: 5px 0;
 }
 
 /*========== Detail Item ==============*/
